@@ -1,72 +1,107 @@
-# 🐳 Docker Installation & Basic Commands
+# Docker-Basic
+=======
 
-This document records the Docker basics I’ve learned so far.
+# 🚀 Docker Learning Notes
+
+This repository contains my learning progress with Docker. It includes installation steps, useful commands, container customization, and image sharing.
 
 ---
 
-## 🚀 1. Install Docker Engine on Linux
+## 📦 Docker Installation
 
-Use Docker's convenience script for quick, non-interactive installation:
+Install Docker Engine on Linux using the convenience script:
 
 ```bash
 curl -fsSL https://get.docker.com -o get-docker.sh
 sudo sh get-docker.sh
-⚠️ Requires root/sudo privileges. Not recommended for production.
+```
 
-##✅ 2. Verify Installation
+Verify installation:
+```bash
 docker --version
-docker
+```
 
-##🧪 3. Test with Hello World
+---
+
+## 🐳 Docker Basics
+
+### 1. Run Hello World
+```bash
 docker run hello-world
-This pulls the hello-world image from Docker Hub and runs it in a container.
+```
 
-##📋 4. Container and Image Commands
-docker ps            # Active containers
-docker ps -a         # All containers
-docker images        # List downloaded images
+### 2. List Containers
+```bash
+docker ps        # Running containers
+docker ps -a     # All containers
+```
 
-##🌐 5. Run NGINX
-docker run nginx
+### 3. List Images
+```bash
+docker images
+```
 
-Above will exit if not run in background. To keep it running:
+---
+
+## 🌐 Working with NGINX
+
+### Run NGINX in the background
+```bash
 docker run -d --name=protyoy1 nginx
+```
 
-##🔁 6. Make NGINX Restart Automatically
+### Run NGINX with port and restart policy
+```bash
 docker run -d --name=protyoy2 -p 80:80 --restart=always nginx
 curl localhost
+```
 
-##🔍 7. Explore Container Internals
+---
+
+## 🛠️ Modify Container Content
+
+```bash
 docker exec -it protyoy2 bash
 cd /etc/nginx
 cat nginx.conf
-Follow the include path to find the actual HTML file and modify it.
+# Follow includes to the HTML root folder and modify index.html
+```
 
-##🖊️ 8. Modify Web Page Content
-Navigate to root (typically /usr/share/nginx/html), edit index.html, then:
+Exit the container and verify with:
+```bash
+curl localhost
+```
 
-exit
-curl localhost   # shows updated content
+---
 
-##🧱 9. Commit Container as New Image
+## 📸 Commit and Save Image
+
+```bash
 docker commit protyoy2 nginx:latest
-
-##💾 10. Save Image as Tar File
 docker save nginx:latest | gzip > nginx-custom.tar.gz
+```
 
-##🧩 11. Load and Run Saved Image
-docker rm -f <container_id>
-docker rmi <image_id>
+---
 
-## 12. Then load and run:
+## 📥 Load and Run the Image
+
+```bash
 docker load -i nginx-custom.tar.gz
 docker run -d -p 80:80 --name=protyoy_tar --restart=always nginx:latest
 curl localhost
+```
 
+---
 
+## 📚 More to Learn
 
+- Volumes
+- Networks
+- Dockerfile
+- Docker Compose
 
+---
 
+## 🧑‍💻 Author
 
-
-
+- [Protyoy](https://github.com/ProtyoyGhosh)
