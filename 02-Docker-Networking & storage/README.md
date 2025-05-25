@@ -90,3 +90,98 @@ This project covers key Docker features for application networking and storage. 
 - How to run containers on custom ports
 - How to make data persistent using bind mounts and volumes
 - Difference between Docker volumes and host mounts
+
+
+# 🔄 Docker Container-to-Container Communication
+
+This guide demonstrates how to enable communication between two Docker containers using a **user-defined bridge network**.
+
+---
+
+## 🌐 Objective
+
+Allow container1 and container2 to access each other using container names as hostnames.
+
+---
+
+## 📋 Step-by-Step Instructions
+
+### 1️⃣ Check Docker Networks
+
+```bash
+docker network ls
+```
+> This lists all existing Docker networks.
+
+---
+
+### 2️⃣ Create a Custom Network
+
+```bash
+docker network create mynetwork
+```
+> Creates a user-defined bridge network which allows name-based container discovery.
+
+---
+
+### 3️⃣ Run Containers on the Same Network
+
+```bash
+docker run -d --name=container1 --network=mynetwork nginx
+docker run -d --name=container2 --network=mynetwork nginx
+```
+> Launch two Nginx containers, attached to the `mynetwork`.
+
+---
+
+### 4️⃣ Modify `index.html` to Identify Containers
+
+#### 🔹 Container 1
+
+```bash
+docker exec -it container1 bash
+cd /usr/share/nginx/html
+echo "hello from container1" > index.html
+cat index.html
+```
+
+#### 🔹 Container 2
+
+```bash
+docker exec -it container2 bash
+cd /usr/share/nginx/html
+echo "hello from container2" > index.html
+cat index.html
+```
+
+---
+
+### 5️⃣ Test Communication Between Containers
+
+#### From container1:
+
+```bash
+docker exec -it container1 bash
+curl localhost             # Should show: hello from container1
+curl container2            # Should show: hello from container2
+```
+
+#### From container2:
+
+```bash
+docker exec -it container2 bash
+curl localhost             # Should show: hello from container2
+curl container1            # Should show: hello from container1
+```
+
+> ✅ This proves container-to-container communication using Docker's internal DNS.
+
+---
+
+## 📌 Summary
+
+- Containers must be on the same **user-defined bridge network**.
+- Docker provides **automatic DNS resolution** using container names.
+- Great for microservices communication in isolated environments.
+
+
