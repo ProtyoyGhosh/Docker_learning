@@ -110,5 +110,67 @@ docker exec -it mysql-db mysql -u root -p
 ```
 
 
+# 🛠️ Custom Docker Image with Docker Compose
+This section demonstrates how to build and run a custom Docker image using a Dockerfile and docker-compose.
+
+## 🗂️ Project Structure
+```text
+project-root/
+├── docker-compose.yml
+├── Dockerfile
+└── html/
+    └── index.html
+```
+
+---
+
+### 🧾 Dockerfile
+This Dockerfile resides in the project root and references the index.html inside the html/ directory:
+
+```bash
+# Use the official Nginx image as a base
+FROM nginx:latest
+
+# Copy custom HTML file into Nginx's default content directory
+COPY ./html/index.html /usr/share/nginx/html/index.html
+```
+This Dockerfile builds a custom Nginx image that serves your own index.html.
+
+### 🧰 docker-compose.yml
+Since we're only using the custom image now, the docker-compose.yml becomes very simple:
+```bash
+version: '3.9'
+
+services:
+  mycustomnginx:
+    build: .
+    container_name: custom-nginx
+    ports:
+      - "8082:80"
+    restart: always
+```
+
+### 🚀 How to Use
+1. Make sure folder and file structure match what’s shown above.
+
+2. From the root directory, run:
+```bash
+docker-compose up -d --build
+```
+3. Visit http://localhost:8082 — you should see your custom HTML page served by Nginx.
+
+### 📌 Notes
+
+If you update index.html or the Dockerfile, run:
+```bash
+docker-compose up -d --build
+```
+to rebuild the image and apply changes.
+
+
+
+
+
+
 
 
