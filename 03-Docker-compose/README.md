@@ -10,10 +10,12 @@ Docker Compose is a tool for defining and running multi-container Docker applica
 ---
 
 ## 🧱 Directory Structure
+```text
 project-root/
 ├── docker-compose.yml
 ├── nginx-html/
 │ └── index.html
+```
 
 ---
 
