@@ -77,9 +77,9 @@ global:
   scrape_interval: 5s
 
 scrape_configs:
-  - job_name: 'prometheus'
+  - job_name: 'node'
     static_configs:
-      - targets: ['localhost:9090']
+      - targets: ['node-exporter:9100']
 ```
 ---
 ## 🚀 3. Deployment Steps
